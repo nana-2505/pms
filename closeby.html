@@ -1,0 +1,227 @@
+<?php
+session_start();
+$user =  $_SESSION['username'];
+$role = $_SESSION['Role'];
+if(empty($_SESSION['username']))
+{
+header("location:index.php");
+}
+else
+{
+if($role=="Admin")
+{
+?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+	body
+	{
+		background-image:url();
+		background-repeat: no-repeat; 
+		background-attachment: fixed;
+		background-size: 100% 100%;
+               
+	}
+  a link{
+            text-decoration: none;
+        }
+  .asidetable{
+    position: absolute;
+    width:99%;
+    background:black;
+    color:white;
+  }
+  .asidetable a{
+    color:white;
+    text-decoration:none;
+  }
+  .asidetable a .active{
+      background:blue;
+  }
+  .container{
+	max-width: 1000px;
+	margin-top:40px;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 1em;
+}
+.wrapper
+{
+	box-shadow: 0 0 10px 0 rgba(72,94,116,0.7);
+}
+
+.wrapper > *{
+	padding: 1em;
+}
+.company-info{
+	background: rgb(241, 176, 23);
+}
+.company-info h3{
+text-align: center;
+}
+.conatct{
+	background: #f9feff;
+}
+.conatct form{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+.conatct form label{
+  display: block;
+}
+.conatct form p{
+	margin: 0;
+}
+.conatct form input, .conatct form textarea{
+	width: 80%;
+	padding: 1em;
+	border:1px solid #ffcdd2;
+	border-radius: 40px;
+}
+.conatct form .Description, .submit-btn{
+	grid-column: 1 / 3;
+}
+
+.conatct form button{
+	width: 30%; 
+	padding: 1em;
+	border:1px solid #ffcdd2;
+	border-radius: 40px;
+}
+.conatct form button {
+	background: rgb(241, 176, 23);
+	border:0;
+	text-transform: uppercase;
+}
+.conatct form button:hover, .conatct form button:focus{
+	background:#ef9a9a;
+	color: #000;
+	outline: 0;
+	transition: background-color 2s ease-out;
+	cursor: pointer;
+}
+
+</style>
+<!-- ADMINS SIDE VIEW ---------------------------------------------------------------------------------- -->
+<title>Project Management System</title>
+</head>
+<div>
+<body>
+    <table width="100%"  border="0"cellspacing="00" cellpadding="00" class="asidetable2">
+  <tr bgcolor="blue" height= 15px>
+    <th width="74" scope="col"></th>
+     <th width="164" scope="col"><img src="images/profile-user"></th>
+     <th width="140" scope="col"><font color="White" size="5">
+	<?php
+    print $role;
+    ?></font></th>
+       <th width="646" scope="col"><font size="6" color="White"><centre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Project Managenent System</centre></font></th>
+    <th><a href="logout.php">Logout</a></th>
+    <th width="63" scope="col">&nbsp;</th>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="asidetable" >
+  
+    
+      <th width="4%" scope="col"><h4>&nbsp;</h4></th>
+
+    <th width="12%" scope="col"><a href="Admin.php" class="active">DASHBOARD</a></th>
+    <th width="12%" scope="col">
+            <div class="dropdown">
+        <a href="">PROJECT</a>
+        <div class="dropdown-content">
+            <a href="newproject.php">Add New project</a>
+            <a href="ADMIN/project.php">List</a></div>
+        </div></th>
+    <th width="11%" scope="col"><a href="ADMIN/stsearch.php">MANAGE</a></th>
+    <th width="11%" scope="col"><a href="ADMIN/report.php">NOTIFICATION</a></th>
+    <th width="11%" scope="col"><a href="ADMIN/report.php">REPORTS</a></th>  
+    <th width="4%" scope="col">&nbsp;</th> 
+     
+</table>
+
+
+
+
+
+<table class="styled-table" >
+    <th><h2 class="pull-left">Project Details</h2></th>
+         <th><a href="newproject.php" data-toggle="modal" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>Add New Project</a></th>
+         <th>	<a href="print_pdf.php" class="btn btn-success pull-right"><span class="glyphicon glyphicon-print"></span> PDF</a></th>
+   
+</tr>
+          <?php
+              echo "<tr>";
+              echo "<th>"."PROJECT ID"."</th>";
+              echo "<th>" ?> &nbsp; <?php "</th>";
+              echo "<th>"."PROJECT TITLE"."</th>";
+              echo "<th>" ?> &nbsp; <?php "</th>";
+              echo "<th>"."PROJECT SUPERVISOR"."</th>";
+              echo "<th>" ?> &nbsp; <?php "</th>";
+              echo "<th>"."CONTACT PERSON"."</th>";
+              echo "<th>" ?> &nbsp; <?php "</th>";
+              echo "<th>"."STATUS"."</th>";
+              echo "<th>"."ACTION"."</th>";
+              echo "</tr>";
+              include './connection.php';
+                      $sql1="SELECT * FROM Project";
+                      $rec=mysqli_query($conn, $sql1);
+                      while ($std=mysqli_fetch_assoc($rec))
+                      {
+                         ?> <tr bgcolor="#2697FF" align="center">
+                             <?php
+                          echo "<td>".$std['prj_id']."<td/>";
+                          echo "<td>".$std['prj_title']."<td/>"; 
+                          echo "<td>".$std['prj_supervisor']."<td/>"; 
+                          echo "<td>".$std['contact_person']."<td/>"; 
+                          echo "<td>".$std['prj_status']."<td/>"; 
+                          // echo "<td>" .<a href="view_project.php? prj_id =".$std['prj_id']."\">view></a> \"<td/>"; 
+                          ?>  </tr> <?php 
+                      }
+          ?>
+      </table>
+
+
+
+      <table class="styled-table" >
+        <th><h2 class="pull-left">Project Details</h2></th>
+             <th><a href="newproject.php" data-toggle="modal" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>Add New Project</a></th>
+             <th>	<a href="print_pdf.php" class="btn btn-success pull-right"><span class="glyphicon glyphicon-print"></span> PDF</a></th>
+       
+  </tr>
+              <?php
+                  echo "<tr>";
+                  echo "<th>"."PROJECT ID"."</th>";
+                  echo "<th>" ?> &nbsp; <?php "</th>";
+                  echo "<th>"."PROJECT TITLE"."</th>";
+                  echo "<th>" ?> &nbsp; <?php "</th>";
+                  echo "<th>"."PROJECT SUPERVISOR"."</th>";
+                  echo "<th>" ?> &nbsp; <?php "</th>";
+                  echo "<th>"."CONTACT PERSON"."</th>";
+                  echo "<th>" ?> &nbsp; <?php "</th>";
+                  echo "<th>"."STATUS"."</th>";
+                  echo "<th>"."ACTION"."</th>";
+                  echo "</tr>";
+                  include './connection.php';
+                          $sql1="SELECT * FROM Project";
+                          $rec=mysqli_query($conn, $sql1);
+                          while ($std=mysqli_fetch_assoc($rec))
+                          {
+                             ?> <tr bgcolor="#2697FF" align="center">
+                                 <?php
+                              echo "<td>".$std['prj_id']."<td/>";
+                              echo "<td>".$std['prj_title']."<td/>"; 
+                              echo "<td>".$std['prj_supervisor']."<td/>"; 
+                              echo "<td>".$std['contact_person']."<td/>"; 
+                              echo "<td>".$std['prj_status']."<td/>"; 
+                              // echo "<td>" .<a href="view_project.php? prj_id =".$std['prj_id']."\">view></a> \"<td/>"; 
+                              ?>  </tr> <?php 
+                          }
+              ?>
+          </table>
